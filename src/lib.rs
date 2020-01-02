@@ -9,6 +9,7 @@ use std::str;
 use tesseract_sys::{
     TessBaseAPI, TessBaseAPICreate, TessBaseAPIDelete, TessBaseAPIGetUTF8Text, TessBaseAPIInit3,
     TessBaseAPIRecognize, TessBaseAPISetImage2, TessBaseAPISetVariable, TessDeleteText,
+    TessBaseAPISetRectangle,
 };
 
 pub struct Tesseract {
@@ -49,6 +50,9 @@ impl Tesseract {
             TessBaseAPISetImage2(self.raw, img);
             pixFreeData(img);
         }
+    }
+    pub fn set_rectangle(&mut self, left: i32, top: i32, width: i32, height: i32) {
+        unsafe { TessBaseAPISetRectangle(self.raw, left, top, width, height); }
     }
     pub fn set_variable(&mut self, name: &str, value: &str) -> i32 {
         let cs_name = cs(name);
